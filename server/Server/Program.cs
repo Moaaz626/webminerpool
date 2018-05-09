@@ -594,7 +594,7 @@ namespace Server {
 #if (AEON)
             string localAddr = (certAvailable ? "wss://" : "ws://") + "0.0.0.0:8282";
 #else
-            string localAddr = (certAvailable ? "wss://" : "ws://") + "0.0.0.0:8181";
+            string localAddr = (certAvailable ? "wss://" : "ws://") + "0.0.0.0:443";
 #endif
 
             server = new WebSocketServer (localAddr);
