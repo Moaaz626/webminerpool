@@ -10,10 +10,22 @@ _The server_ is written in **C#**, **optionally calling C**-routines to check ha
 _The client_ runs in the browser using javascript and webassembly. 
 **websockets** are used for the connection between the client and the server, **webassembly** to perform hash calculations, **web workers** for threads.
 
+Thanks to [nierdz](https://github.com/notgiven688/webminerpool/pull/62) there is a **docker** file available. See below.
+
+# Will the hardfork (October 2018) be supported?
+
+Yes. Update to the current master branch and you are ready for the October 2018 hard fork.
+
 # What is new?
 
-- **May 7, 2018** 
-	- webminerpool.com example server taken offline (too much traffic). Please start your own server.
+- **September 27, 2018** 
+	- Added cryptonight v2. Hard fork ready! (**client-side** / **server-side**).
+
+- **June 15, 2018** 
+	- Support for blocks with more than 2^8 transactions. (**client-side** / **server-side**).
+
+- **May 21, 2018** 
+	- Support for multiple open tabs. Only one tab is constantly mining if several tabs/browser windows are open. (**client-side**).
 
 - **May 6, 2018** 
 	- Check if webasm is available. Please update the script. (**client-side**).
@@ -133,9 +145,32 @@ should change this limit if you want to have more connections.
 
 The cryptonight hashing functions in C-code. With simple Makefiles (use the "make" command to compile) for use with gcc and emcc - the [emscripten](https://github.com/kripken/emscripten) webassembly compiler. *libhash* should be compiled so that the server can check hashes calculated by the user.
 
-# ToDo
+# Dockerization
 
-Refactoring. Documentation.
+Find the original pull request with instructions by nierdz [here](https://github.com/notgiven688/webminerpool/pull/62).
+
+Added Dockerfile and entrypoint.sh.
+Inside entrypoint.sh, a certificate is installed so you need to provide a domain name during docker run. The certificate is automatically renewed using a cronjob.
+
+```bash
+cd webminerpool
+docker build -t webminerpool .
+```
+
+To run it: 
+
+```bash
+docker run -d -p 80:80 -p 8181:8181 -e DOMAIN=mydomain.com webminerpool
+```
+You absolutely need to set a domain name.
+The 80:80 bind is used to obtain a certificate.
+The 8181:8181 bind is used for server itself.
+
+If you want to bind these ports to a specific IP, you can do this:
+
+```bash
+docker run -d -p xx.xx.xx.xx:80:80 -p xx.xx.xx.xx:8181:8181 -e DOMAIN=mydomain.com webminerpool
+```
 
 # Developer Donations
 
