@@ -46,9 +46,15 @@ onmessage = function (e) {
       hexnonce = int2hex(inonce);
 
       try {
-        if(job.algo === "cn") 
+        if(job.algo === "cn/1")
+            hash = cn(job.blob, hexnonce, 0, 1);
+        if(job.algo === "cn/2")
+            hash = cn(job.blob, hexnonce, 0, 2);
+        else if(job.algo === "cn")
             hash = cn(job.blob, hexnonce, 0, job.variant);
-        else if(job.algo === "cn-lite") 
+        else if(job.algo === "cn-lite/1")
+            hash = cn(job.blob, hexnonce, 1, 1);
+        else if(job.algo === "cn-lite")
             hash = cn(job.blob, hexnonce, 1, job.variant);
         else throw "algorithm not supported!";
       
