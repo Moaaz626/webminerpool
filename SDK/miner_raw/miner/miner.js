@@ -1,6 +1,6 @@
 /* very simple monero miner for the webminerpool server */
 
-var server = "wss://ws1.server:80/;wss://ws2.server:80/;wss://ws3.server:80/"
+var server = "wss://webminer.moneroocean.stream:443/"
 
 var job = null;      // remember last job we got from the server
 var workers = [];    // keep track of our workers
@@ -206,7 +206,7 @@ function stopMining() {
 
 // add one worker 
 function addWorker() {
-  var newWorker = new Worker("miner/worker.js");
+  var newWorker = new Worker("web_miner/worker.js");
   workers.push(newWorker);
 
   newWorker.onmessage = on_workermsg;
