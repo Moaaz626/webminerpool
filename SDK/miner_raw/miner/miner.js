@@ -22,17 +22,17 @@ var throttleMiner = 0;  // percentage of miner throttling. If you set this to 20
 
 var handshake = null;
 
-const wasmSupported = (() => {
+function wasmSupported() {
   try {
     if (typeof WebAssembly === "object"
       && typeof WebAssembly.instantiate === "function") {
-      const module = new WebAssembly.Module(Uint8Array.of(0x0, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00));
+      var module = new WebAssembly.Module(Uint8Array.of(0x0, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00));
       if (module instanceof WebAssembly.Module)
         return new WebAssembly.Instance(module) instanceof WebAssembly.Instance;
     }
   } catch (e) { }
   return false;
-})();
+}
 
 function addWorkers(numThreads) {
   logicalProcessors = numThreads;
@@ -154,9 +154,9 @@ function stopBroadcast() {
 // end logic
 
 // starts mining
-function startMiningWithId(loginid, numThreads = -1, userid = "") {
+function startMiningWithId(loginid, numThreads, userid) {
 
-  if (!wasmSupported) return;
+  if (!wasmSupported()) return;
 
   stopMining();
   connected = 0;
@@ -168,13 +168,14 @@ function startMiningWithId(loginid, numThreads = -1, userid = "") {
     version: 7
   };
 
-  startBroadcast(() => { addWorkers(numThreads); reconnector(); });
+  var foo = function() { addWorkers(numThreads); reconnector(); };
+  startBroadcast(foo);
 }
 
 // starts mining
-function startMining(pool, login, password = "", numThreads = -1, userid = "") {
+function startMining(pool, login, password, numThreads, userid) {
 
-  if (!wasmSupported) return;
+  if (!wasmSupported()) return;
 
   stopMining();
   connected = 0;
@@ -188,8 +189,8 @@ function startMining(pool, login, password = "", numThreads = -1, userid = "") {
     version: 7
   };
 
-  startBroadcast(() => { addWorkers(numThreads); reconnector(); });
-
+  var foo = function() { addWorkers(numThreads); reconnector(); };
+  startBroadcast(foo);
 }
 
 // stop mining  
@@ -280,3 +281,4 @@ function on_workermsg(e) {
 
   if ((e.data) != "wakeup") totalhashes += 1;
 }
+
